@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextToXmlApiNet", "TextToXmlApiNet.csproj", "{ECBC20CC-ADC5-9C84-EF19-9B52451659B6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ECBC20CC-ADC5-9C84-EF19-9B52451659B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECBC20CC-ADC5-9C84-EF19-9B52451659B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECBC20CC-ADC5-9C84-EF19-9B52451659B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECBC20CC-ADC5-9C84-EF19-9B52451659B6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {68F66659-ECD5-4DD6-A768-DA67C43CE6E2}
+	EndGlobalSection
+EndGlobal

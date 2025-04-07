@@ -1,0 +1,8 @@
+### Test Email Field
+POST http://localhost:5211/api/validation
+Content-Type: application/json
+
+{
+  "fieldName": "Email",
+  "value": "Mohsen@"
+}

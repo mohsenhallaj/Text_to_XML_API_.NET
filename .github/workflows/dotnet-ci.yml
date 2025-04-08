@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '9.0.x' # Use your required .NET version
+        dotnet-version: '9.0.x'
 
     - name: Restore dependencies
       run: dotnet restore
@@ -28,23 +28,8 @@ jobs:
     - name: Run tests
       run: dotnet test --no-build --verbosity normal
 
-    - name: 📤 Upload Benchmark Results
-      uses: actions/upload-artifact@7f082f02d126fc711211cd06c9cbf1c325fa00c3 # Direct commit SHA for stable version
+    - name: Upload Benchmark Results
+      uses: actions/upload-artifact@v3 # ✅ Use a valid version tag — NOT a SHA
       with:
         name: BenchmarkResults
         path: TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results
-
-    - name: 📊 Publish Benchmark Results (Optional but Awesome)
-      if: success() && github.ref == 'refs/heads/main'
-      run: |
-        echo "Publishing benchmark results..."
-        mkdir -p ./artifacts/benchmark-results
-        cp -r TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results/* ./artifacts/benchmark-results/
-
-    - name: Deploy to GitHub Pages (Optional)
-      if: success() && github.ref == 'refs/heads/main'
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./artifacts/benchmark-results
-        publish_branch: gh-pages

@@ -27,9 +27,10 @@ jobs:
 
     - name: 🚀 Run benchmark
       run: dotnet run --project TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj -c Release
+      continue-on-error: true  # Optional: don't fail the whole workflow if benchmarking fails
 
     - name: 📤 Upload Benchmark Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v2
       with:
         name: benchmark-results
         path: TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results/

@@ -29,7 +29,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal
 
     - name: Upload Benchmark Results
-      uses: actions/upload-artifact@v3 # ✅ Use a valid version tag — NOT a SHA
+      uses: actions/upload-artifact@v2 # ✅ switch to v2 — stable and works
       with:
         name: BenchmarkResults
         path: TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results

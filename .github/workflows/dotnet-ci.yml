@@ -1,4 +1,4 @@
-name: .NET CI
+name: Benchmark CI
 
 on:
   push:
@@ -7,26 +7,29 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-benchmark:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: 🧾 Checkout repository
       uses: actions/checkout@v3
 
-    - name: Setup .NET
+    - name: 🛠️ Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '9.0.x'
 
-    - name: Restore dependencies
+    - name: 📦 Restore dependencies
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore
+    - name: 🏗️ Build benchmark project
+      run: dotnet build TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj -c Release
 
-    - name: Upload Benchmark Report
-      uses: actions/upload-artifact@v4
+    - name: 🚀 Run benchmark
+      run: dotnet run --project TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj -c Release
+
+    - name: 📤 Upload Benchmark Artifacts
+      uses: actions/upload-artifact@v3
       with:
         name: benchmark-results
         path: TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results/

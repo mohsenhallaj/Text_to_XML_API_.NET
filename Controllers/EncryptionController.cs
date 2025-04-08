@@ -88,7 +88,7 @@ namespace TextToXmlApiNet.Controllers
                     "AES" => _aes.Decrypt(request.Text),
                     "RSA" => _rsa.Decrypt(request.Text),
                     "BASE64" => Encoding.UTF8.GetString(Convert.FromBase64String(request.Text)),
-                    _ => throw new ArgumentException($"❌ Unsupported decryption algorithm: '{request.Algorithm}'")
+                    _ => throw new ArgumentException($" Unsupported decryption algorithm: '{request.Algorithm}'")
                 };
 
                 return Ok(new EncryptionResponse { Encrypted = result });

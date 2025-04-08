@@ -70,7 +70,7 @@ namespace TextToXmlApiNet.Controllers
 
                 var schemas = new XmlSchemaSet();
                 schemas.Add("", xsdPath);
-                doc.Validate(schemas, (o, e) => errors.Add($"❌ Schema Error: {e.Message}"));
+                doc.Validate(schemas, (o, e) => errors.Add($" Schema Error: {e.Message}"));
 
                 if (errors.Any())
                 {

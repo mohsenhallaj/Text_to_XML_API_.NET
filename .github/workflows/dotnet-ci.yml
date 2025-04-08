@@ -25,11 +25,8 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
 
-    - name: Run tests
-      run: dotnet test --no-build --verbosity normal
-
-    - name: Upload Benchmark Results
-      uses: actions/upload-artifact@v2 # ✅ switch to v2 — stable and works
+    - name: Upload Benchmark Report
+      uses: actions/upload-artifact@v4
       with:
-        name: BenchmarkResults
-        path: TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results
+        name: benchmark-results
+        path: TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results/

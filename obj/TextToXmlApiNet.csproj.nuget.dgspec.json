@@ -44,6 +44,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "BenchmarkDotNet": {
+              "target": "Package",
+              "version": "[0.14.0, )"
+            },
             "Hangfire": {
               "target": "Package",
               "version": "[1.8.18, )"

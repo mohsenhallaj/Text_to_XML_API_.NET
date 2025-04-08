@@ -11,25 +11,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name:  Checkout code
+    - name: Checkout code
       uses: actions/checkout@v3
 
-    - name:  Setup .NET SDK
+    - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '9.0.x'
+        dotnet-version: '9.0.x' # Use your required .NET version
 
-    - name:  Restore dependencies
+    - name: Restore dependencies
       run: dotnet restore
 
-    - name:  Build
-      run: dotnet build --no-restore --configuration Release
+    - name: Build
+      run: dotnet build --no-restore
 
-    - name:  Run Benchmark
-      run: dotnet run --project TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj --configuration Release
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
 
     - name:  Upload Benchmark Results
-      uses: actions/upload-artifact@v3.1.2
+      uses: actions/upload-artifact@7f082f02d126fc711211cd06c9cbf1c325fa00c3  # Fixed with SHA to avoid resolution issues
       with:
         name: BenchmarkResults
         path: TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results
+
+    - name:  Publish Benchmark Results (Optional but Awesome)
+      if: success() && github.ref == 'refs/heads/main'
+      run: |
+        echo "Publishing benchmark results..."
+        mkdir -p ./artifacts/benchmark-results
+        cp -r TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results/* ./artifacts/benchmark-results/
+
+    - name: Deploy to GitHub Pages (Optional)
+      if: success() && github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./artifacts/benchmark-results
+        publish_branch: gh-pages

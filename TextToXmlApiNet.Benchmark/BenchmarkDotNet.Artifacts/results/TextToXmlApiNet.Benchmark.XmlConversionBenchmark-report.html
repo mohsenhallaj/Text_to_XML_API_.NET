@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>TextToXmlApiNet.Benchmark.XmlConversionBenchmark-20250408-123820</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.13.10, Windows 11 (10.0.26100.3624)
+12th Gen Intel Core i7-1260P, 1 CPU, 16 logical and 12 physical cores
+.NET SDK 9.0.202
+  [Host]     : .NET 9.0.3 (9.0.325.11113), X64 RyuJIT AVX2
+  DefaultJob : .NET 9.0.3 (9.0.325.11113), X64 RyuJIT AVX2
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method          </th><th>Mean</th><th>Error</th><th>StdDev</th><th>Gen0</th><th>Gen1</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>&#39;XDocument + LINQ&#39;</td><td>96.09 &mu;s</td><td>1.433 &mu;s</td><td>1.270 &mu;s</td><td>22.0947</td><td>5.8594</td><td>203.56 KB</td>
+</tr><tr><td>XmlWriter</td><td>48.83 &mu;s</td><td>0.959 &mu;s</td><td>1.464 &mu;s</td><td>15.2588</td><td>3.7842</td><td>140.78 KB</td>
+</tr><tr><td>&#39;StringBuilder Manual&#39;</td><td>12.37 &mu;s</td><td>0.231 &mu;s</td><td>0.181 &mu;s</td><td>12.9852</td><td>2.5940</td><td>119.84 KB</td>
+</tr></tbody></table>
+</body>
+</html>

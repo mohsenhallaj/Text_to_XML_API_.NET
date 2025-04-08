@@ -1,4 +1,4 @@
-name: .NET CI with Benchmark Artifacts
+name: .NET CI with Benchmark Upload
 
 on:
   push:
@@ -25,11 +25,11 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Release
 
-    - name: Run Benchmarks
+    - name: Run Benchmark
       run: dotnet run --project TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj --configuration Release
 
     - name: Upload Benchmark Results
       uses: actions/upload-artifact@v3
       with:
         name: BenchmarkResults
-        path: TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts
+        path: TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results

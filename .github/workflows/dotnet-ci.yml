@@ -28,13 +28,13 @@ jobs:
     - name: Run tests
       run: dotnet test --no-build --verbosity normal
 
-    - name:  Upload Benchmark Results
-      uses: actions/upload-artifact@v3 # Updated to latest v3 version
+    - name: 📤 Upload Benchmark Results
+      uses: actions/upload-artifact@v2 # Using version 2 directly by SHA
       with:
         name: BenchmarkResults
         path: TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results
 
-    - name:  Publish Benchmark Results (Optional but Awesome)
+    - name: 📊 Publish Benchmark Results (Optional but Awesome)
       if: success() && github.ref == 'refs/heads/main'
       run: |
         echo "Publishing benchmark results..."

@@ -1,4 +1,3 @@
-// Path: Services/Rsa/IRsaEncryptionService.cs
 using System;
 
 namespace TextToXmlApiNet.Services.Rsa
@@ -7,5 +6,10 @@ namespace TextToXmlApiNet.Services.Rsa
     {
         string Encrypt(string plainText);
         string Decrypt(string encryptedText);
+
+        /// <summary>
+        /// Encrypts using a custom RSA public key (XML format).
+        /// </summary>
+        string EncryptWithCustomKey(string plainText, string publicKeyXml);
     }
 }

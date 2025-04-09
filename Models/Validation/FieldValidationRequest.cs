@@ -2,7 +2,7 @@ namespace TextToXmlApiNet.Models.Validation
 {
     public class FieldValidationRequest
     {
-        public string FieldName { get; set; }
-        public string FieldValue { get; set; }
+        public string FieldName { get; set; } = string.Empty;
+        public string FieldValue { get; set; } = string.Empty;
     }
 }

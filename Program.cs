@@ -2,15 +2,15 @@ using System.Diagnostics;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Hangfire;
-using Hangfire.Redis;
 using TextToXmlApiNet.Middleware;
 using TextToXmlApiNet.Services;
 using TextToXmlApiNet.Services.AesImpl;
 using TextToXmlApiNet.Services.Rsa;
 using TextToXmlApiNet.Data;
-using Hangfire.Redis.StackExchange;
 using Serilog;
+using Hangfire;
+using Hangfire.Redis;
+using Hangfire.Redis.StackExchange;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,31 +26,37 @@ Log.Logger = new LoggerConfiguration()
         rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
-builder.Host.UseSerilog(); // Tell .NET to use Serilog
+builder.Host.UseSerilog();
 
-// Load configuration from appsettings.json
+// Load configuration
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 // Add controllers and XML formatting
 builder.Services.AddControllers()
     .AddXmlSerializerFormatters();
 
-// Register EF Core with SQLite
+// EF Core with SQLite
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=Data/XmlStorage.db"));
 
-// Hangfire with Redis for async job processing
+// ✅ Hangfire with Redis
 builder.Services.AddHangfire(config =>
-    config.UseRedisStorage("localhost:6379"));
+{
+    config.UseRedisStorage("localhost:6379");
+});
 builder.Services.AddHangfireServer();
+builder.Services.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
 
-// Swagger/OpenAPI support with XML docs and API key auth
+// Swagger / OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+    if (File.Exists(xmlPath))
+    {
+        options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+    }
 
     options.SwaggerDoc("v1", new OpenApiInfo
     {
@@ -64,7 +70,7 @@ builder.Services.AddSwaggerGen(options =>
 - Store the generated XML files in SQLite  
 - Process XML in the background using Redis + Hangfire
 
- All routes require an API key in the Authorization header."
+All routes require an API key in the Authorization header."
     });
 
     options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
@@ -92,7 +98,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Application services
+// App Services
 builder.Services.AddScoped<IAesEncryptionService, AesEncryptionService>();
 builder.Services.AddSingleton<IRsaEncryptionService, RsaEncryptionService>();
 builder.Services.AddScoped<FieldValidationService>();
@@ -101,34 +107,45 @@ builder.Services.AddScoped<XmlBackgroundService>();
 
 var app = builder.Build();
 
-// Swagger
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+// ✅ Middleware Order Matters
 
+app.UseRouting();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "TextToXmlApiNet v1");
+    c.RoutePrefix = "swagger";
+});
+
+// Optional: Auto-open Swagger UI
+try
+{
     Process.Start(new ProcessStartInfo
     {
         FileName = "http://localhost:5211/swagger",
         UseShellExecute = true
     });
 }
+catch (Exception ex)
+{
+    Console.WriteLine("⚠ Failed to auto-launch Swagger UI: " + ex.Message);
+}
 
-// Hangfire Dashboard
 app.UseHangfireDashboard("/jobs");
 
-// API key middleware
+app.UseAuthorization();
 app.UseMiddleware<ApiKeyMiddleware>();
 
-// Routing
-app.UseAuthorization();
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
-// Run
 try
 {
     Log.Information("Starting application...");
-    app.Run();
+    app.Run("http://localhost:5211");
 }
 catch (Exception ex)
 {

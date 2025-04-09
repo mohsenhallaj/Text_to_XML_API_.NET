@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
+using TextToXmlApiNet.Models.Encryption;
 using TextToXmlApiNet.Services.AesImpl;
 using TextToXmlApiNet.Services.Rsa;
-using TextToXmlApiNet.Models.Encryption;
-using System.Text;
 
 namespace TextToXmlApiNet.Controllers
 {
@@ -23,13 +23,8 @@ namespace TextToXmlApiNet.Controllers
         }
 
         /// <summary>
-        /// Encrypts a string using the specified algorithm (AES, RSA, or BASE64).
+        /// Encrypts a string using AES, RSA, or BASE64.
         /// </summary>
-        /// <param name="request">The encryption request containing text and algorithm.</param>
-        /// <returns>The encrypted result in base64 format.</returns>
-        /// <response code="200">Returns the encrypted text.</response>
-        /// <response code="400">If the algorithm is missing or invalid.</response>
-        /// <response code="500">If an error occurs during encryption.</response>
         [HttpPost("encrypt")]
         [ProducesResponseType(typeof(EncryptionResponse), 200)]
         [ProducesResponseType(400)]
@@ -37,7 +32,7 @@ namespace TextToXmlApiNet.Controllers
         public ActionResult<EncryptionResponse> Encrypt([FromBody] EncryptionRequest request)
         {
             var algo = request.Algorithm?.Trim().ToUpperInvariant();
-            Console.WriteLine(" Requested Algorithm: " + algo);
+            Console.WriteLine("Requested Encryption Algorithm: " + algo);
 
             if (string.IsNullOrWhiteSpace(algo))
                 return BadRequest("Algorithm is required.");
@@ -49,26 +44,21 @@ namespace TextToXmlApiNet.Controllers
                     "AES" => _aes.Encrypt(request.Text),
                     "RSA" => _rsa.Encrypt(request.Text),
                     "BASE64" => Convert.ToBase64String(Encoding.UTF8.GetBytes(request.Text)),
-                    _ => throw new ArgumentException($" Unsupported encryption algorithm: '{request.Algorithm}'")
+                    _ => throw new ArgumentException($"Unsupported encryption algorithm: '{request.Algorithm}'")
                 };
 
                 return Ok(new EncryptionResponse { Encrypted = result });
             }
             catch (Exception ex)
             {
-                Console.WriteLine(" Encryption error: " + ex.Message);
+                Console.WriteLine("Encryption error: " + ex.Message);
                 return StatusCode(500, "Encryption failed: " + ex.Message);
             }
         }
 
         /// <summary>
-        /// Decrypts a string using the specified algorithm (AES, RSA, or BASE64).
+        /// Decrypts a string using AES, RSA, or BASE64.
         /// </summary>
-        /// <param name="request">The decryption request containing text and algorithm.</param>
-        /// <returns>The decrypted plain text.</returns>
-        /// <response code="200">Returns the decrypted result.</response>
-        /// <response code="400">If the algorithm is missing or invalid.</response>
-        /// <response code="500">If an error occurs during decryption.</response>
         [HttpPost("decrypt")]
         [ProducesResponseType(typeof(EncryptionResponse), 200)]
         [ProducesResponseType(400)]
@@ -76,7 +66,7 @@ namespace TextToXmlApiNet.Controllers
         public ActionResult<EncryptionResponse> Decrypt([FromBody] EncryptionRequest request)
         {
             var algo = request.Algorithm?.Trim().ToUpperInvariant();
-            Console.WriteLine(" Requested Decryption Algorithm: " + algo);
+            Console.WriteLine("Requested Decryption Algorithm: " + algo);
 
             if (string.IsNullOrWhiteSpace(algo))
                 return BadRequest("Algorithm is required.");
@@ -88,14 +78,14 @@ namespace TextToXmlApiNet.Controllers
                     "AES" => _aes.Decrypt(request.Text),
                     "RSA" => _rsa.Decrypt(request.Text),
                     "BASE64" => Encoding.UTF8.GetString(Convert.FromBase64String(request.Text)),
-                    _ => throw new ArgumentException($" Unsupported decryption algorithm: '{request.Algorithm}'")
+                    _ => throw new ArgumentException($"Unsupported decryption algorithm: '{request.Algorithm}'")
                 };
 
                 return Ok(new EncryptionResponse { Encrypted = result });
             }
             catch (Exception ex)
             {
-                Console.WriteLine(" Decryption error: " + ex.Message);
+                Console.WriteLine("Decryption error: " + ex.Message);
                 return StatusCode(500, "Decryption failed: " + ex.Message);
             }
         }

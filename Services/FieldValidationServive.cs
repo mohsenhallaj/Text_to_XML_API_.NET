@@ -15,7 +15,7 @@ namespace TextToXmlApiNet.Services
 
             if (!File.Exists(filePath))
             {
-                Console.WriteLine(" FieldDefinition.json not found at path: " + filePath);
+                Console.WriteLine(" FieldDefinition.json not found at: " + filePath);
                 _fields = new List<FieldDefinition>();
                 _rootElement = "Root";
                 return;
@@ -28,12 +28,11 @@ namespace TextToXmlApiNet.Services
                 _fields = config?.Structure ?? new List<FieldDefinition>();
                 _rootElement = config?.Root ?? "Root";
 
-                Console.WriteLine($" Loaded {_fields.Count} field definitions from JSON.");
-                Console.WriteLine($" Root element from config: {_rootElement}");
+                Console.WriteLine($" Loaded {_fields.Count} fields. Root: {_rootElement}");
 
                 foreach (var field in _fields)
                 {
-                    Console.WriteLine($"• Field: {field.Name}, Required: {field.Required}, MinLength: {field.MinLength}, MaxLength: {field.MaxLength}, Regex: {field.ValidationRegex}");
+                    Console.WriteLine($"• Field: {field.Name}, Required: {field.Required}, Min: {field.MinLength}, Max: {field.MaxLength}");
                 }
             }
             catch (Exception ex)
@@ -51,7 +50,7 @@ namespace TextToXmlApiNet.Services
 
         public FieldValidationResult ValidateFieldDetailed(string fieldName, string value)
         {
-            Console.WriteLine($" Validating field: '{fieldName}' with value: '{value}'");
+            Console.WriteLine($" Validating field '{fieldName}' with value: '{value}'");
 
             var result = new FieldValidationResult
             {
@@ -73,7 +72,7 @@ namespace TextToXmlApiNet.Services
 
             if (field.Required && string.IsNullOrWhiteSpace(trimmedValue))
             {
-                Console.WriteLine(" Value is required but is empty.");
+                Console.WriteLine(" Value is required but empty.");
                 result.IsValid = false;
                 return result;
             }
@@ -92,18 +91,7 @@ namespace TextToXmlApiNet.Services
                 return result;
             }
 
-            if (!string.IsNullOrWhiteSpace(field.ValidationRegex))
-            {
-                Console.WriteLine($" Validating with regex: {field.ValidationRegex}");
-                bool match = Regex.IsMatch(trimmedValue, field.ValidationRegex);
-                if (match)
-                {
-                    result.MatchedPatterns.Add(field.ValidationRegex);
-                }
-                result.IsValid = match;
-                return result;
-            }
-
+            // ✅ Use all defined patterns
             foreach (var pattern in field.Patterns ?? new List<string>())
             {
                 if (Regex.IsMatch(trimmedValue, pattern))

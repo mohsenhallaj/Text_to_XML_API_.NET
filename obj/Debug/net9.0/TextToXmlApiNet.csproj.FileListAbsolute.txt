@@ -1,6 +1,0 @@
-D:\MOHSEN\Project2025\TextToXmlApiNet\obj\Debug\net9.0\TextToXmlApiNet.csproj.AssemblyReference.cache
-D:\MOHSEN\Project2025\TextToXmlApiNet\obj\Debug\net9.0\TextToXmlApiNet.GeneratedMSBuildEditorConfig.editorconfig
-D:\MOHSEN\Project2025\TextToXmlApiNet\obj\Debug\net9.0\TextToXmlApiNet.csproj.CoreCompileInputs.cache
-D:\MOHSEN\Project2025\TextToXmlApiNet\obj\Debug\net9.0\TextToXmlApiNet.MvcApplicationPartsAssemblyInfo.cs
-D:\MOHSEN\Project2025\TextToXmlApiNet\obj\Debug\net9.0\TextToXmlApiNet.MvcApplicationPartsAssemblyInfo.cache
-D:\MOHSEN\Project2025\TextToXmlApiNet\obj\Debug\net9.0\TextToXmlApiNet.sourcelink.json

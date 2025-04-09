@@ -65,8 +65,6 @@
               "version": "[9.0.3, )"
             },
             "Microsoft.CodeAnalysis.Analyzers": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
               "target": "Package",
               "version": "[3.3.3, )"
             },
@@ -75,8 +73,6 @@
               "version": "[7.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.0, )"
             },
@@ -101,20 +97,8 @@
               "version": "[4.3.1, )"
             },
             "coverlet.collector": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
               "target": "Package",
               "version": "[6.0.4, )"
-            },
-            "xunit": {
-              "target": "Package",
-              "version": "[2.9.3, )"
-            },
-            "xunit.runner.visualstudio": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[3.0.2, )"
             }
           },
           "imports": [

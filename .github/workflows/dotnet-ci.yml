@@ -41,6 +41,9 @@ jobs:
       with:
         dotnet-version: '9.0.x'
 
+    - name: Clean conflicting benchmark output folder
+      run: rm -rf TextToXmlApiNet.Benchmark/bin/Release/net9.0/TextToXmlApiNet.Benchmark
+
     - name: Restore dependencies
       run: dotnet restore TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj
 

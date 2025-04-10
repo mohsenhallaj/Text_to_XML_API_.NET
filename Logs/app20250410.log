@@ -1,0 +1,22 @@
+2025-04-10 10:03:31.962 +02:00 [INF] Starting application...
+2025-04-10 10:03:32.038 +02:00 [INF] Now listening on: http://localhost:5211
+2025-04-10 10:03:32.046 +02:00 [INF] Starting Hangfire Server using job storage: 'redis://localhost:6379/0'
+2025-04-10 10:03:32.048 +02:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-04-10 10:03:32.057 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-10 10:03:32.059 +02:00 [INF] Hosting environment: Development
+2025-04-10 10:03:32.060 +02:00 [INF] Content root path: D:\MOHSEN\Project2025\TextToXmlApiNet
+2025-04-10 10:03:32.079 +02:00 [INF] Server moslola:6732:e7ab80e1 successfully announced in 16.0871 ms
+2025-04-10 10:03:32.082 +02:00 [INF] Server moslola:6732:e7ab80e1 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-04-10 10:03:32.089 +02:00 [INF] Removing expired records from the 'succeeded' list...
+2025-04-10 10:03:32.093 +02:00 [INF] Server moslola:6732:e7ab80e1 all the dispatchers started
+2025-04-10 10:03:32.093 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5211/swagger/v1/swagger.json - null null
+2025-04-10 10:03:32.231 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5211/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 138.6279ms
+2025-04-10 10:05:30.595 +02:00 [INF] Server moslola:6732:e7ab80e1 caught stopping signal...
+2025-04-10 10:05:30.598 +02:00 [INF] Application is shutting down...
+2025-04-10 10:05:30.601 +02:00 [INF] Server moslola:6732:e7ab80e1 All dispatchers stopped
+2025-04-10 10:05:30.606 +02:00 [INF] Server moslola:6732:e7ab80e1 successfully reported itself as stopped in 2.2072 ms
+2025-04-10 10:05:30.608 +02:00 [INF] Server moslola:6732:e7ab80e1 has been stopped in total 9.5192 ms

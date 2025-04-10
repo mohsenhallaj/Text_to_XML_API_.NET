@@ -2,24 +2,34 @@
 bin/
 obj/
 
-# User files
+# User-specific files
 *.user
 *.suo
 
 # Databases
 *.db
 *.sqlite
+Data/XmlStorage.db  # specific path in your project
+
+# IDE configs
+.vscode/
+.idea/
 
 # Environment config
 .env
-
-# VS Code settings
-.vscode/
 
 # BenchmarkDotNet
 BenchmarkDotNet.Artifacts/
 BenchmarkDotNet.Artifacts.results/
 
-# OS junk
+# Logs
+*.log
+Logs/
+
+# Coverage reports
+coverage-report/
+*.coverage
+
+# OS-specific junk
 .DS_Store
 Thumbs.db

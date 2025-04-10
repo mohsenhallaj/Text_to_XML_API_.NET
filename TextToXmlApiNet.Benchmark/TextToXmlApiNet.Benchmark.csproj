@@ -1,10 +1,11 @@
-﻿  <PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <OutputPath>bin/Release/net9.0/</OutputPath>
+    <AssemblyName>TextToXmlApiNet.Benchmark</AssemblyName>
   </PropertyGroup>
-
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />

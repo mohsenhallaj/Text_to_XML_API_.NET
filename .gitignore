@@ -1,0 +1,25 @@
+# Build artifacts
+bin/
+obj/
+
+# User files
+*.user
+*.suo
+
+# Databases
+*.db
+*.sqlite
+
+# Environment config
+.env
+
+# VS Code settings
+.vscode/
+
+# BenchmarkDotNet
+BenchmarkDotNet.Artifacts/
+BenchmarkDotNet.Artifacts.results/
+
+# OS junk
+.DS_Store
+Thumbs.db

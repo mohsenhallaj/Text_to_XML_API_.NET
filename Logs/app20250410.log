@@ -1,0 +1,62 @@
+2025-04-10 13:37:28.607 +02:00 [INF] Starting application...
+2025-04-10 13:37:28.684 +02:00 [INF] Now listening on: http://localhost:5211
+2025-04-10 13:37:28.692 +02:00 [INF] Starting Hangfire Server using job storage: 'redis://localhost:6379/0'
+2025-04-10 13:37:28.695 +02:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-04-10 13:37:28.706 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-10 13:37:28.708 +02:00 [INF] Hosting environment: Development
+2025-04-10 13:37:28.710 +02:00 [INF] Content root path: D:\MOHSEN\Project2025\TextToXmlApiNet
+2025-04-10 13:37:28.724 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5211/swagger/index.css - null null
+2025-04-10 13:37:28.725 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5211/swagger/swagger-ui-bundle.js - null null
+2025-04-10 13:37:28.724 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5211/swagger/swagger-ui.css - null null
+2025-04-10 13:37:28.728 +02:00 [INF] Server moslola:12488:43486223 successfully announced in 16.6694 ms
+2025-04-10 13:37:28.735 +02:00 [INF] Server moslola:12488:43486223 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-04-10 13:37:28.741 +02:00 [INF] Removing expired records from the 'succeeded' list...
+2025-04-10 13:37:28.745 +02:00 [INF] Server moslola:12488:43486223 all the dispatchers started
+2025-04-10 13:37:28.746 +02:00 [INF] Removing 2 expired jobs from 'succeeded' list...
+2025-04-10 13:37:28.775 +02:00 [INF] Sending file. Request path: '/index.css'. Physical path: 'N/A'
+2025-04-10 13:37:28.780 +02:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-04-10 13:37:28.780 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5211/swagger/index.css - 200 202 text/css 56.1557ms
+2025-04-10 13:37:28.783 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5211/swagger/swagger-ui.css - 200 154948 text/css 60.0974ms
+2025-04-10 13:37:28.790 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5211/swagger/swagger-ui-standalone-preset.js - null null
+2025-04-10 13:37:28.794 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5211/swagger/index.js - null null
+2025-04-10 13:37:28.797 +02:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-04-10 13:37:28.800 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5211/swagger/swagger-ui-bundle.js - 200 1466741 text/javascript 76.6274ms
+2025-04-10 13:37:28.801 +02:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-04-10 13:37:28.809 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5211/swagger/swagger-ui-standalone-preset.js - 200 229223 text/javascript 18.1647ms
+2025-04-10 13:37:28.855 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5211/swagger/index.js - 200 null application/javascript;charset=utf-8 59.9522ms
+2025-04-10 13:37:28.924 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5211/swagger/v1/swagger.json - null null
+2025-04-10 13:37:29.044 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5211/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 120.4419ms
+2025-04-10 13:38:26.476 +02:00 [WRN] Stopping the server due to DomainUnload or ProcessExit event...
+2025-04-10 13:38:26.483 +02:00 [INF] Server moslola:12488:43486223 caught stopping signal...
+2025-04-10 13:38:26.485 +02:00 [INF] Server moslola:12488:43486223 caught stopped signal...
+2025-04-10 13:38:26.488 +02:00 [INF] Server moslola:12488:43486223 All dispatchers stopped
+2025-04-10 13:38:26.489 +02:00 [WRN] Server moslola:12488:43486223 caught shutdown signal...
+2025-04-10 13:38:26.494 +02:00 [INF] Server moslola:12488:43486223 successfully reported itself as stopped in 2.6686 ms
+2025-04-10 13:38:26.498 +02:00 [INF] Server moslola:12488:43486223 has been stopped in total 13.4475 ms
+2025-04-10 13:51:31.288 +02:00 [INF] Starting application...
+2025-04-10 13:51:31.343 +02:00 [INF] Now listening on: http://localhost:5211
+2025-04-10 13:51:31.350 +02:00 [INF] Starting Hangfire Server using job storage: 'redis://localhost:6379/0'
+2025-04-10 13:51:31.354 +02:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2025-04-10 13:51:31.364 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-04-10 13:51:31.366 +02:00 [INF] Hosting environment: Development
+2025-04-10 13:51:31.367 +02:00 [INF] Content root path: D:\MOHSEN\Project2025\TextToXmlApiNet
+2025-04-10 13:51:31.373 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5211/swagger/v1/swagger.json - null null
+2025-04-10 13:51:31.383 +02:00 [INF] Server moslola:24720:556f1390 successfully announced in 12.8278 ms
+2025-04-10 13:51:31.386 +02:00 [INF] Server moslola:24720:556f1390 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, FetchedJobsWatcher, ExpiredJobsWatcher, RedisSubscription, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2025-04-10 13:51:31.394 +02:00 [INF] Removing expired records from the 'succeeded' list...
+2025-04-10 13:51:31.398 +02:00 [INF] Server moslola:24720:556f1390 all the dispatchers started
+2025-04-10 13:51:31.399 +02:00 [INF] Removing 3 expired jobs from 'succeeded' list...
+2025-04-10 13:51:31.482 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5211/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 109.7499ms
+2025-04-10 13:56:30.906 +02:00 [INF] Server moslola:24720:556f1390 caught stopping signal...
+2025-04-10 13:56:30.912 +02:00 [INF] Application is shutting down...
+2025-04-10 13:56:30.917 +02:00 [INF] Server moslola:24720:556f1390 All dispatchers stopped
+2025-04-10 13:56:30.922 +02:00 [INF] Server moslola:24720:556f1390 successfully reported itself as stopped in 1.8698 ms
+2025-04-10 13:56:30.924 +02:00 [INF] Server moslola:24720:556f1390 has been stopped in total 12.8121 ms

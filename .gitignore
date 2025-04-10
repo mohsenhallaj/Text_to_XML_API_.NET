@@ -46,7 +46,6 @@ Keys/
 BenchmarkDotNet.Artifacts/
 BenchmarkDotNet.Artifacts.results/
 *.Benchmark.csproj
-TextToXmlApiNet.Benchmark/
 TextToXmlApiNet.Tests/
 *.Tests.csproj
 

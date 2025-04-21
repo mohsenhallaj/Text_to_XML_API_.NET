@@ -30,11 +30,4 @@
     </None>
   </ItemGroup>
 
-  <!-- Add this to include web.config in publish output -->
-  <ItemGroup>
-    <Content Include="web.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
 </Project>

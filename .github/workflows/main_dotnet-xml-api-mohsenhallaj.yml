@@ -25,7 +25,7 @@ jobs:
           dotnet-version: '9.x'
 
       - name: Publish with dotnet
-        run: dotnet publish TextToXmlApiNet/TextToXmlApiNet.csproj -c Release -o ./publish
+        run: dotnet publish TextToXmlApiNet.csproj -c Release -o ./publish
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4

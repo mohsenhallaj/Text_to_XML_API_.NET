@@ -1,0 +1,65 @@
+name: Build and deploy ASP.Net Core app to Azure Web App - dotnet-xml-api-mohsenhallaj
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show folder structure (debug)
+        run: Get-ChildItem -Recurse -Force
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+
+      - name: Publish with dotnet
+        run: dotnet publish TextToXmlApiNet.csproj -c Release -o ./publish
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-app
+          path: ./publish
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: dotnet-app
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_55CCA2BF94D44D539BF4DF8A1EAD3AE1 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6C3A2E98DB9F4AA8B3867A365D0B3754 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_59E69B29EFB94F088B736776C43E9128 }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'dotnet-xml-api-mohsenhallaj'
+          slot-name: 'Production'
+          package: .

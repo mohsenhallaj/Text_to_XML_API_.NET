@@ -1,13 +1,8 @@
-using System.Text.Json.Serialization;
+namespace TextToXmlApiNet.Models.Validation;
 
-namespace TextToXmlApiNet.Models.Validation
+public class FieldDefinitionConfig
 {
-    public class FieldDefinitionConfig
-    {
-        [JsonPropertyName("root")]
-        public string Root { get; set; }
+    public string Root { get; set; } = string.Empty;
 
-        [JsonPropertyName("structure")]
-        public List<FieldDefinition> Structure { get; set; } = new();
-    }
+    public List<FieldDefinition> Structure { get; set; } = new();
 }

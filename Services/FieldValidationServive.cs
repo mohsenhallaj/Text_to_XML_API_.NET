@@ -15,7 +15,7 @@ namespace TextToXmlApiNet.Services
 
             if (!File.Exists(filePath))
             {
-                Console.WriteLine(" FieldDefinition.json not found at: " + filePath);
+                Console.WriteLine("❌ FieldDefinition.json not found at: " + filePath);
                 _fields = new List<FieldDefinition>();
                 _rootElement = "Root";
                 return;
@@ -25,10 +25,13 @@ namespace TextToXmlApiNet.Services
             {
                 string json = File.ReadAllText(filePath);
                 var config = JsonSerializer.Deserialize<FieldDefinitionConfig>(json);
+
+                // ✅ Adjusted this line based on your actual model
                 _fields = config?.Structure ?? new List<FieldDefinition>();
+
                 _rootElement = config?.Root ?? "Root";
 
-                Console.WriteLine($" Loaded {_fields.Count} fields. Root: {_rootElement}");
+                Console.WriteLine($"✅ Loaded {_fields.Count} fields. Root: {_rootElement}");
 
                 foreach (var field in _fields)
                 {
@@ -38,7 +41,7 @@ namespace TextToXmlApiNet.Services
             catch (Exception ex)
             {
                 _fields = new List<FieldDefinition>();
-                Console.WriteLine($" Error loading JSON: {ex.Message}");
+                Console.WriteLine($"❌ Error loading JSON: {ex.Message}");
                 _rootElement = "Root";
             }
         }
@@ -50,7 +53,7 @@ namespace TextToXmlApiNet.Services
 
         public FieldValidationResult ValidateFieldDetailed(string fieldName, string value)
         {
-            Console.WriteLine($" Validating field '{fieldName}' with value: '{value}'");
+            Console.WriteLine($"🔎 Validating field '{fieldName}' with value: '{value}'");
 
             var result = new FieldValidationResult
             {
@@ -63,7 +66,7 @@ namespace TextToXmlApiNet.Services
             var field = _fields.FirstOrDefault(f => f.Name == fieldName);
             if (field == null)
             {
-                Console.WriteLine($" No config found for field: {fieldName}");
+                Console.WriteLine($"⚠ No config found for field: {fieldName}");
                 result.IsValid = false;
                 return result;
             }
@@ -72,26 +75,25 @@ namespace TextToXmlApiNet.Services
 
             if (field.Required && string.IsNullOrWhiteSpace(trimmedValue))
             {
-                Console.WriteLine(" Value is required but empty.");
+                Console.WriteLine("⚠ Value is required but empty.");
                 result.IsValid = false;
                 return result;
             }
 
             if (trimmedValue.Length < field.MinLength)
             {
-                Console.WriteLine($" Too short. Min length: {field.MinLength}");
+                Console.WriteLine($"⚠ Too short. Min length: {field.MinLength}");
                 result.IsValid = false;
                 return result;
             }
 
             if (field.MaxLength.HasValue && trimmedValue.Length > field.MaxLength.Value)
             {
-                Console.WriteLine($" Too long. Max length: {field.MaxLength.Value}");
+                Console.WriteLine($"⚠ Too long. Max length: {field.MaxLength.Value}");
                 result.IsValid = false;
                 return result;
             }
 
-            // ✅ Use all defined patterns
             foreach (var pattern in field.Patterns ?? new List<string>())
             {
                 if (Regex.IsMatch(trimmedValue, pattern))
@@ -112,7 +114,7 @@ namespace TextToXmlApiNet.Services
 
             if (field?.Patterns == null)
             {
-                Console.WriteLine($" No patterns for field: {fieldName}");
+                Console.WriteLine($"⚠ No patterns for field: {fieldName}");
                 return matchedPatterns;
             }
 
@@ -121,7 +123,7 @@ namespace TextToXmlApiNet.Services
                 if (Regex.IsMatch(trimmedValue, pattern))
                 {
                     matchedPatterns.Add(pattern);
-                    Console.WriteLine($" Pattern matched: {pattern}");
+                    Console.WriteLine($"✅ Pattern matched: {pattern}");
                 }
             }
 

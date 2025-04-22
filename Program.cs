@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Reflection;
+using Hangfire.Redis.StackExchange; // ✅ correct
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TextToXmlApiNet.Middleware;
@@ -9,14 +10,10 @@ using TextToXmlApiNet.Services.Rsa;
 using TextToXmlApiNet.Data;
 using Serilog;
 using Hangfire;
-using Hangfire.Redis;
-using Hangfire.Redis.StackExchange;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// -----------------------------
-// Serilog setup BEFORE builder.Build()
-// -----------------------------
+// Serilog setup
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
@@ -28,20 +25,18 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-// ✅ FIXED: Load appsettings.json from current directory, works in tests too
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 // Add controllers and XML formatting
-builder.Services.AddControllers()
-    .AddXmlSerializerFormatters();
+builder.Services.AddControllers().AddXmlSerializerFormatters();
 
-// EF Core with SQLite
+// EF Core
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=Data/XmlStorage.db"));
 
-// Hangfire with Redis
+// Hangfire
 builder.Services.AddHangfire(config =>
 {
     config.UseRedisStorage("localhost:6379");
@@ -49,30 +44,20 @@ builder.Services.AddHangfire(config =>
 builder.Services.AddHangfireServer();
 builder.Services.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
 
-// Swagger / OpenAPI
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     if (File.Exists(xmlPath))
-    {
         options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
-    }
 
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "TextToXmlApiNet",
         Version = "1.0",
-        Description = @"This REST API allows users to:
-- Convert structured text into validated XML  
-- Encrypt and decrypt XML using AES or RSA  
-- Validate XML against an XSD schema  
-- Authenticated access using API keys  
-- Store the generated XML files in SQLite  
-- Process XML in the background using Redis + Hangfire
-
-All routes require an API key in the Authorization header."
+        Description = @"API for converting and validating XML, encrypting it, and more..."
     });
 
     options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
@@ -100,7 +85,7 @@ All routes require an API key in the Authorization header."
     });
 });
 
-// App Services
+// Dependency injection
 builder.Services.AddScoped<IAesEncryptionService, AesEncryptionService>();
 builder.Services.AddSingleton<IRsaEncryptionService, RsaEncryptionService>();
 builder.Services.AddScoped<FieldValidationService>();
@@ -109,9 +94,6 @@ builder.Services.AddScoped<XmlBackgroundService>();
 
 var app = builder.Build();
 
-// -----------------------------
-// Middleware Order Matters
-// -----------------------------
 app.UseRouting();
 
 app.UseSwagger();
@@ -121,7 +103,6 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
-// Optional: Auto-open Swagger UI
 try
 {
     Process.Start(new ProcessStartInfo
@@ -136,10 +117,8 @@ catch (Exception ex)
 }
 
 app.UseHangfireDashboard("/jobs");
-
 app.UseAuthorization();
 
-// Only use ApiKeyMiddleware if not in "Testing" environment
 if (!app.Environment.IsEnvironment("Testing"))
 {
     app.UseMiddleware<ApiKeyMiddleware>();
@@ -150,6 +129,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
+// App start
 try
 {
     Log.Information("Starting application...");
@@ -164,5 +144,5 @@ finally
     Log.CloseAndFlush();
 }
 
-// Needed for integration test project
+// This is what test projects need
 public partial class Program { }

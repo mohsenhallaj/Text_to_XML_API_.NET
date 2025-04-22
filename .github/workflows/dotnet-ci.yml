@@ -29,6 +29,9 @@ jobs:
       - name: Build solution
         run: dotnet build TextToXmlApiNet.sln --configuration Release --no-restore
 
+      - name: Run Tests
+        run: dotnet test TextToXmlApiNet.sln --no-build --configuration Release
+
   benchmark:
     name: Run Benchmark
     runs-on: ubuntu-latest
@@ -44,13 +47,13 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Restore Benchmark Dependencies
-        run: dotnet restore TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj
+        run: dotnet restore TextToXmlApiNet/TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj
 
       - name: Run Benchmark
-        run: dotnet run --project TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj -c Release
+        run: dotnet run --project TextToXmlApiNet/TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj -c Release
 
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
         with:
           name: benchmark-results
-          path: TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results/
+          path: TextToXmlApiNet/TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results/

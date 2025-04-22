@@ -1,4 +1,6 @@
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
@@ -12,9 +14,9 @@ public class SystemControllerTests : TestBase
     [Fact]
     public async Task GetSystemInfo_ShouldReturn200AndValidData()
     {
-        _client.DefaultRequestHeaders.Add("X-API-KEY", "super-secret-123");
+        Client.DefaultRequestHeaders.Add("X-API-KEY", "super-secret-123");
 
-        var response = await _client.GetAsync("/api/system/info");
+        var response = await Client.GetAsync("/api/system/info");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 

@@ -1,30 +1,23 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Hosting;
 using System.Net.Http;
 using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
 namespace TextToXmlApiNet.IntegrationTests;
 
 public class TestBase : IClassFixture<WebApplicationFactory<Program>>
 {
-    protected readonly HttpClient _client;
+    protected readonly HttpClient Client;
 
     public TestBase(WebApplicationFactory<Program> factory)
     {
-        // ✅ Updated: Point to the root folder, not subfolder
-        var projectDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
+        var projectDir = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.FullName;
 
-        _client = factory
-            .WithWebHostBuilder(webBuilder =>
-            {
-                webBuilder.UseSetting(WebHostDefaults.ContentRootKey, projectDir);
-                webBuilder.ConfigureAppConfiguration((context, configBuilder) =>
-                {
-                    context.HostingEnvironment.EnvironmentName = "Development";
-                });
-            })
-            .CreateClient();
+        Client = factory.WithWebHostBuilder(builder =>
+        {
+            builder.UseEnvironment("Testing");
+            builder.UseContentRoot(projectDir); // ✅ fix: tell the test where the app is
+        }).CreateClient();
     }
 }

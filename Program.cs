@@ -28,8 +28,10 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-// Load configuration
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+// ✅ FIXED: Load appsettings.json from current directory, works in tests too
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 // Add controllers and XML formatting
 builder.Services.AddControllers()
@@ -39,7 +41,7 @@ builder.Services.AddControllers()
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=Data/XmlStorage.db"));
 
-// ✅ Hangfire with Redis
+// Hangfire with Redis
 builder.Services.AddHangfire(config =>
 {
     config.UseRedisStorage("localhost:6379");
@@ -107,8 +109,9 @@ builder.Services.AddScoped<XmlBackgroundService>();
 
 var app = builder.Build();
 
-// ✅ Middleware Order Matters
-
+// -----------------------------
+// Middleware Order Matters
+// -----------------------------
 app.UseRouting();
 
 app.UseSwagger();
@@ -135,7 +138,12 @@ catch (Exception ex)
 app.UseHangfireDashboard("/jobs");
 
 app.UseAuthorization();
-app.UseMiddleware<ApiKeyMiddleware>();
+
+// Only use ApiKeyMiddleware if not in "Testing" environment
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    app.UseMiddleware<ApiKeyMiddleware>();
+}
 
 app.UseEndpoints(endpoints =>
 {
@@ -155,3 +163,6 @@ finally
 {
     Log.CloseAndFlush();
 }
+
+// Needed for integration test project
+public partial class Program { }

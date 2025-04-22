@@ -44,13 +44,13 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Restore Benchmark Dependencies
-        run: dotnet restore TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj
+        run: dotnet restore TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj
 
       - name: Run Benchmark
-        run: dotnet run --project TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj -c Release
+        run: dotnet run --project TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj -c Release
 
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
         with:
           name: benchmark-results
-          path: TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results/
+          path: TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results/

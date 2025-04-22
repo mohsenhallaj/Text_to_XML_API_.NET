@@ -33,31 +33,3 @@ jobs:
         run: dotnet test TextToXmlApiNet.sln --no-build --configuration Release
         env:
           ASPNETCORE_ENVIRONMENT: Testing
-
-  benchmark:
-    name: Run Benchmark
-    runs-on: ubuntu-latest
-    needs: build-and-test
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '9.0.x'
-
-      - name: Restore Benchmark Dependencies
-        run: dotnet restore TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj
-
-      - name: Run Benchmark
-        run: dotnet run --project TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj -c Release
-        env:
-          ASPNETCORE_ENVIRONMENT: Testing
-
-      - name: Upload Benchmark Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: benchmark-results
-          path: TextToXmlApiNet.Benchmark/BenchmarkDotNet.Artifacts/results/

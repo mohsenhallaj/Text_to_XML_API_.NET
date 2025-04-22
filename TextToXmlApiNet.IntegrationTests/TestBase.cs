@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
 using System.Net.Http;
+using System.IO;
 using Xunit;
 
 namespace TextToXmlApiNet.IntegrationTests;
@@ -11,12 +13,16 @@ public class TestBase : IClassFixture<WebApplicationFactory<Program>>
 
     public TestBase(WebApplicationFactory<Program> factory)
     {
+        // ✅ Updated: Point to the root folder, not subfolder
+        var projectDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
+
         _client = factory
-            .WithWebHostBuilder(builder =>
+            .WithWebHostBuilder(webBuilder =>
             {
-                builder.ConfigureAppConfiguration((context, configBuilder) =>
+                webBuilder.UseSetting(WebHostDefaults.ContentRootKey, projectDir);
+                webBuilder.ConfigureAppConfiguration((context, configBuilder) =>
                 {
-                    context.HostingEnvironment.EnvironmentName = "Development"; // or "Testing" if you prefer
+                    context.HostingEnvironment.EnvironmentName = "Development";
                 });
             })
             .CreateClient();

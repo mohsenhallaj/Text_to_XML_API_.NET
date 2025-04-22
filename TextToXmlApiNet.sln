@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextToXmlApiNet", "TextToXm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextToXmlApiNet.IntegrationTests", "TextToXmlApiNet.IntegrationTests\TextToXmlApiNet.IntegrationTests.csproj", "{CF8FF45D-4D8D-4493-9F46-F43CEC02BFE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextToXmlApiNet.Benchmark", "Benchmarks/TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj", "{NEW-GUID-HERE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextToXmlApiNet.Benchmark", "Benchmarks/TextToXmlApiNet.Benchmark/TextToXmlApiNet.Benchmark.csproj", "{A1234567-B123-4C56-A123-ABCD12345678}"
 EndProject
 
 Global
@@ -46,18 +46,18 @@ Global
 		{CF8FF45D-4D8D-4493-9F46-F43CEC02BFE1}.Release|x86.ActiveCfg = Release|Any CPU
 		{CF8FF45D-4D8D-4493-9F46-F43CEC02BFE1}.Release|x86.Build.0 = Release|Any CPU
 
-		{NEW-GUID-HERE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{NEW-GUID-HERE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{NEW-GUID-HERE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{NEW-GUID-HERE}.Debug|x64.Build.0 = Debug|Any CPU
-		{NEW-GUID-HERE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{NEW-GUID-HERE}.Debug|x86.Build.0 = Debug|Any CPU
-		{NEW-GUID-HERE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{NEW-GUID-HERE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{NEW-GUID-HERE}.Release|x64.ActiveCfg = Release|Any CPU
-		{NEW-GUID-HERE}.Release|x64.Build.0 = Release|Any CPU
-		{NEW-GUID-HERE}.Release|x86.ActiveCfg = Release|Any CPU
-		{NEW-GUID-HERE}.Release|x86.Build.0 = Release|Any CPU
+		{A1234567-B123-4C56-A123-ABCD12345678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1234567-B123-4C56-A123-ABCD12345678}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1234567-B123-4C56-A123-ABCD12345678}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A1234567-B123-4C56-A123-ABCD12345678}.Debug|x64.Build.0 = Debug|Any CPU
+		{A1234567-B123-4C56-A123-ABCD12345678}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A1234567-B123-4C56-A123-ABCD12345678}.Debug|x86.Build.0 = Debug|Any CPU
+		{A1234567-B123-4C56-A123-ABCD12345678}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1234567-B123-4C56-A123-ABCD12345678}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1234567-B123-4C56-A123-ABCD12345678}.Release|x64.ActiveCfg = Release|Any CPU
+		{A1234567-B123-4C56-A123-ABCD12345678}.Release|x64.Build.0 = Release|Any CPU
+		{A1234567-B123-4C56-A123-ABCD12345678}.Release|x86.ActiveCfg = Release|Any CPU
+		{A1234567-B123-4C56-A123-ABCD12345678}.Release|x86.Build.0 = Release|Any CPU
 
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TextToXmlApiNet</name>
+    </assembly>
+    <members>
+        <member name="M:TextToXmlApiNet.Controllers.ConvertController.ConvertAsync(TextToXmlApiNet.Models.Validation.ConvertRequest)">
+            <summary>
+            Enqueues a background job to convert JSON to XML and validate.
+            </summary>
+        </member>
+        <member name="M:TextToXmlApiNet.Controllers.ConvertController.ConvertToXml(TextToXmlApiNet.Models.Validation.ConvertRequest)">
+            <summary>
+            Converts JSON to validated XML and returns as raw XML if valid.
+            </summary>
+        </member>
+        <member name="M:TextToXmlApiNet.Controllers.ConvertController.GetLatestXml">
+            <summary>
+            Get the latest XML stored in the database.
+            </summary>
+        </member>
+        <member name="T:TextToXmlApiNet.Controllers.EncryptionController">
+            <summary>
+            Handles encryption and decryption using AES, RSA, and Base64.
+            </summary>
+        </member>
+        <member name="M:TextToXmlApiNet.Controllers.EncryptionController.Encrypt(EncryptionRequest)">
+            <summary>
+            Encrypts a string using AES, RSA, or BASE64.
+            </summary>
+        </member>
+        <member name="M:TextToXmlApiNet.Controllers.EncryptionController.Decrypt(EncryptionRequest)">
+            <summary>
+            Decrypts a string using AES, RSA, or BASE64.
+            </summary>
+        </member>
+        <member name="T:TextToXmlApiNet.Controllers.SystemController">
+            <summary>
+            API health and system info
+            </summary>
+        </member>
+        <member name="M:TextToXmlApiNet.Controllers.SystemController.Health">
+            <summary>
+            Health Check
+            </summary>
+        </member>
+        <member name="M:TextToXmlApiNet.Controllers.SystemController.GetSystemInfo">
+            <summary>
+            Returns system diagnostics for debugging and monitoring.
+            </summary>
+            <remarks>
+            - OS and processor count  
+            - Application version  
+            - Uptime since process start  
+            - ASP.NET Core environment name  
+            - .NET version  
+            - Machine name  
+            - Current memory usage
+            </remarks>
+            <response code="200">Returns system info including version, uptime, and memory usage</response>
+        </member>
+        <member name="M:TextToXmlApiNet.Controllers.SystemController.Home">
+            <summary>
+            Welcome endpoint
+            </summary>
+        </member>
+        <member name="T:TextToXmlApiNet.Controllers.ValidationController">
+            <summary>
+            Handles validation of input fields using custom rules defined in JSON.
+            </summary>
+        </member>
+        <member name="M:TextToXmlApiNet.Controllers.ValidationController.Validate(TextToXmlApiNet.Models.Validation.UnifiedValidationRequest)">
+            <summary>
+            Validates a single field or multiple fields using predefined rules.
+            </summary>
+            <param name="request">UnifiedValidationRequest object with either FieldName + FieldValue or Fields dictionary.</param>
+            <returns>Validation result(s)</returns>
+            <response code="200">Returns validation result(s)</response>
+            <response code="400">Bad input request</response>
+        </member>
+        <member name="T:TextToXmlApiNet.Migrations.CreateXmlStorageTable">
+            <inheritdoc />
+        </member>
+        <member name="M:TextToXmlApiNet.Migrations.CreateXmlStorageTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:TextToXmlApiNet.Migrations.CreateXmlStorageTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:TextToXmlApiNet.Migrations.CreateXmlStorageTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:TextToXmlApiNet.Models.Encryption.EncryptionResponse">
+            <summary>
+            Represents the encrypted (or decrypted) result of an operation.
+            </summary>
+        </member>
+        <member name="T:TextToXmlApiNet.Models.Rsa.RsaEncryptionRequest">
+            <summary>
+            RSA encryption request model.
+            </summary>
+        </member>
+        <member name="P:TextToXmlApiNet.Models.Rsa.RsaEncryptionRequest.Text">
+            <summary>
+            The plain text to encrypt.
+            </summary>
+        </member>
+        <member name="P:TextToXmlApiNet.Models.Rsa.RsaEncryptionRequest.PublicKey">
+            <summary>
+            The public RSA key to use for encryption (optional if server uses its own key).
+            </summary>
+        </member>
+        <member name="T:TextToXmlApiNet.Models.Rsa.RsaEncryptionResponse">
+            <summary>
+            RSA encryption response model.
+            </summary>
+        </member>
+        <member name="P:TextToXmlApiNet.Models.Rsa.RsaEncryptionResponse.Encrypted">
+            <summary>
+            The encrypted result, encoded in Base64.
+            </summary>
+        </member>
+        <member name="M:TextToXmlApiNet.Services.Rsa.IRsaEncryptionService.EncryptWithCustomKey(System.String,System.String)">
+            <summary>
+            Encrypts using a custom RSA public key (XML format).
+            </summary>
+        </member>
+    </members>
+</doc>

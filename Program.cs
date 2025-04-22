@@ -27,7 +27,7 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-// ✅ Use AppContext.BaseDirectory for test compatibility
+// Use AppContext.BaseDirectory for test compatibility
 builder.Configuration
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -41,7 +41,7 @@ builder.Services.AddControllers()
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=Data/XmlStorage.db"));
 
-// ✅ Skip Hangfire/Redis setup if in test mode
+// Skip Hangfire/Redis setup if in test mode
 if (!builder.Environment.IsEnvironment("Testing"))
 {
     builder.Services.AddHangfire(config =>
@@ -135,7 +135,7 @@ catch (Exception ex)
     Console.WriteLine("⚠ Failed to auto-launch Swagger UI: " + ex.Message);
 }
 
-// ✅ Only show Hangfire Dashboard if not Testing
+// Only show Hangfire Dashboard if not Testing
 if (!app.Environment.IsEnvironment("Testing"))
 {
     app.UseHangfireDashboard("/jobs");

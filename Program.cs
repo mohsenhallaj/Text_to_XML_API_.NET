@@ -58,7 +58,7 @@ if (!builder.Environment.IsEnvironment("Testing"))
     }
 }
 
-// Swagger / OpenAPI
+// Swagger / OpenAPI + API Key support
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -118,6 +118,7 @@ var app = builder.Build();
 
 app.UseRouting();
 
+// Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -139,17 +140,18 @@ catch (Exception ex)
     Console.WriteLine("⚠ Failed to auto-launch Swagger UI: " + ex.Message);
 }
 
-// Hangfire Dashboard (conditionally)
+// Hangfire dashboard (only for non-testing)
 if (!app.Environment.IsEnvironment("Testing"))
 {
     app.UseHangfireDashboard("/jobs");
 }
 
+// Authorization & Middleware
 app.UseAuthorization();
 
 if (!app.Environment.IsEnvironment("Testing"))
 {
-    app.UseMiddleware<ApiKeyMiddleware>();
+    app.UseMiddleware<ApiKeyMiddleware>(); // <-- API KEY Middleware here
 }
 
 app.UseEndpoints(endpoints =>

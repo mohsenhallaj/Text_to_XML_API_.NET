@@ -13,9 +13,9 @@ using Hangfire.Redis.StackExchange;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// -----------------------------
+
 // Serilog setup BEFORE builder.Build()
-// -----------------------------
+
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()

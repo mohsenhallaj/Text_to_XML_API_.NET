@@ -17,6 +17,15 @@ namespace TextToXmlApiNet.Middleware
 
         public async Task InvokeAsync(HttpContext context)
         {
+            var path = context.Request.Path.Value;
+
+            // Skip API Key check for Swagger and favicon
+            if (path.StartsWith("/swagger") || path.StartsWith("/swagger/index.html") || path == "/favicon.ico")
+            {
+                await _next(context);
+                return;
+            }
+
             if (!context.Request.Headers.TryGetValue("X-API-KEY", out var extractedApiKey))
             {
                 context.Response.StatusCode = 401;

@@ -13,9 +13,7 @@ using Hangfire.Redis.StackExchange;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-// Serilog setup BEFORE builder.Build()
-
+// Serilog setup
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
@@ -27,7 +25,7 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-// Use AppContext.BaseDirectory for test compatibility
+// Configuration setup
 builder.Configuration
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -41,15 +39,23 @@ builder.Services.AddControllers()
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=Data/XmlStorage.db"));
 
-// Skip Hangfire/Redis setup if in test mode
+// Hangfire/Redis setup with retry safety
 if (!builder.Environment.IsEnvironment("Testing"))
 {
-    builder.Services.AddHangfire(config =>
+    try
     {
-        config.UseRedisStorage("localhost:6379");
-    });
-    builder.Services.AddHangfireServer();
-    builder.Services.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
+        var redisConnectionString = "localhost:6379,abortConnect=false";
+        builder.Services.AddHangfire(config =>
+        {
+            config.UseRedisStorage(redisConnectionString);
+        });
+        builder.Services.AddHangfireServer();
+        builder.Services.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
+    }
+    catch (Exception ex)
+    {
+        Log.Error(ex, "Failed to configure Hangfire with Redis");
+    }
 }
 
 // Swagger / OpenAPI
@@ -73,9 +79,7 @@ builder.Services.AddSwaggerGen(options =>
 - Validate XML against an XSD schema  
 - Authenticated access using API keys  
 - Store the generated XML files in SQLite  
-- Process XML in the background using Redis + Hangfire
-
-All routes require an API key in the Authorization header."
+- Process XML in the background using Redis + Hangfire"
     });
 
     options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
@@ -121,7 +125,7 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
-// Optional: Auto-open Swagger UI
+// Optional Swagger auto-launch
 try
 {
     Process.Start(new ProcessStartInfo
@@ -135,7 +139,7 @@ catch (Exception ex)
     Console.WriteLine("⚠ Failed to auto-launch Swagger UI: " + ex.Message);
 }
 
-// Only show Hangfire Dashboard if not Testing
+// Hangfire Dashboard (conditionally)
 if (!app.Environment.IsEnvironment("Testing"))
 {
     app.UseHangfireDashboard("/jobs");
@@ -167,5 +171,5 @@ finally
     Log.CloseAndFlush();
 }
 
-// Needed for integration test project
+// For integration tests
 public partial class Program { }

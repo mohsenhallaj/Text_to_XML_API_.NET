@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -25,30 +24,28 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-// Configuration setup
+// Configuration
 builder.Configuration
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
-// Add controllers and XML formatting
+// Controllers & XML formatting
 builder.Services.AddControllers()
     .AddXmlSerializerFormatters();
 
-// EF Core with SQLite
+// EF Core (SQLite)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=Data/XmlStorage.db"));
 
-// Hangfire/Redis setup
+// Hangfire (non-testing only)
 if (!builder.Environment.IsEnvironment("Testing"))
 {
     try
     {
         var redisConnectionString = "localhost:6379,abortConnect=false";
         builder.Services.AddHangfire(config =>
-        {
-            config.UseRedisStorage(redisConnectionString);
-        });
+            config.UseRedisStorage(redisConnectionString));
         builder.Services.AddHangfireServer();
         builder.Services.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
     }
@@ -58,7 +55,7 @@ if (!builder.Environment.IsEnvironment("Testing"))
     }
 }
 
-// Swagger + API Key setup
+// Swagger + API key
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -73,13 +70,13 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "TextToXmlApiNet",
         Version = "1.0",
-        Description = @"This REST API allows users to:
-- Convert structured text into validated XML  
-- Encrypt and decrypt XML using AES or RSA  
-- Validate XML against an XSD schema  
-- Authenticated access using API keys  
-- Store the generated XML files in SQLite  
-- Process XML in the background using Redis + Hangfire"
+        Description = @"REST API for:
+- Validated XML conversion
+- AES/RSA encryption
+- XSD validation
+- API Key protection
+- SQLite storage
+- Hangfire background jobs"
     });
 
     options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
@@ -107,7 +104,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// App Services
+// Services
 builder.Services.AddScoped<IAesEncryptionService, AesEncryptionService>();
 builder.Services.AddSingleton<IRsaEncryptionService, RsaEncryptionService>();
 builder.Services.AddScoped<FieldValidationService>();
@@ -116,9 +113,9 @@ builder.Services.AddScoped<XmlBackgroundService>();
 
 var app = builder.Build();
 
+// Middleware & routing
 app.UseRouting();
 
-// Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -126,51 +123,21 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
-// Auto-launch Swagger in browser
-try
-{
-    Process.Start(new ProcessStartInfo
-    {
-        FileName = "http://localhost:5211/swagger",
-        UseShellExecute = true
-    });
-}
-catch (Exception ex)
-{
-    Console.WriteLine("⚠ Failed to auto-launch Swagger UI: " + ex.Message);
-}
-
-// Hangfire Dashboard (not in Testing)
+// Hangfire dashboard
 if (!app.Environment.IsEnvironment("Testing"))
 {
     app.UseHangfireDashboard("/jobs");
 }
 
-// Conditionally apply API key middleware (skip Swagger and root)
+// API Key protection
 if (!app.Environment.IsEnvironment("Testing"))
 {
-    app.Use(async (context, next) =>
-    {
-        var path = context.Request.Path.Value;
-
-        if (path.StartsWith("/swagger") || path == "/" || path.StartsWith("/favicon"))
-        {
-            await next();
-        }
-        else
-        {
-            var middleware = new ApiKeyMiddleware(next, builder.Configuration);
-            await middleware.InvokeAsync(context);
-        }
-    });
+    app.UseMiddleware<ApiKeyMiddleware>();
 }
 
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+app.MapControllers(); // instead of UseEndpoints()
 
 try
 {

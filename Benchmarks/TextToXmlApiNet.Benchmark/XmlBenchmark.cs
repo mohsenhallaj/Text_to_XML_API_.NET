@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace TextToXmlApiNet.Benchmark;
 
-public class XmlBenchmark
+public class XmlBenchmarkRunner
 {
     private const string SampleText = "<root><child>content</child></root>";
 

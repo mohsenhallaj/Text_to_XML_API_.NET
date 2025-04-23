@@ -1,5 +1,5 @@
 ############################################
-# 🔧 Build and Runtime
+#  Build and Runtime
 ############################################
 bin/
 obj/
@@ -8,7 +8,7 @@ obj/
 *.pdb
 
 ############################################
-# 🧠 IDEs and Tools
+#  IDEs and Tools
 ############################################
 .vscode/
 .idea/
@@ -19,7 +19,7 @@ obj/
 *.log
 
 ############################################
-# 🛠 .NET-specific
+#  .NET-specific
 ############################################
 *.db
 *.sqlite
@@ -30,7 +30,7 @@ obj/
 Migrations/*ModelSnapshot.cs
 
 ############################################
-# 🔐 Secrets & Keys
+#  Secrets & Keys
 ############################################
 *.key
 *.iv
@@ -41,7 +41,7 @@ Migrations/*ModelSnapshot.cs
 Keys/
 
 ############################################
-# 🧪 Tests & Benchmarks
+#  Tests & Benchmarks
 ############################################
 BenchmarkDotNet.Artifacts/
 BenchmarkDotNet.Artifacts.results/
@@ -50,34 +50,34 @@ TextToXmlApiNet.Tests/
 *.Tests.csproj
 
 ############################################
-# 🧪 Coverage Reports
+#  Coverage Reports
 ############################################
 coverage-report/
 *.coverage
 *.coveragexml
 
 ############################################
-# 🌀 Swagger / HTTP Testing Files
+#  Swagger / HTTP Testing Files
 ############################################
 *.http
 SwaggerTest/
 
 ############################################
-# 📦 NuGet / Package Restore
+#  NuGet / Package Restore
 ############################################
 *.nupkg
 packages/
 *.snupkg
 
 ############################################
-# 💻 OS & Editor Junk
+#  OS & Editor Junk
 ############################################
 .DS_Store
 Thumbs.db
 desktop.ini
 
 ############################################
-# 🌐 Others You Might Add Later
+#  Others You Might Add Later
 ############################################
 .env
 .env.local

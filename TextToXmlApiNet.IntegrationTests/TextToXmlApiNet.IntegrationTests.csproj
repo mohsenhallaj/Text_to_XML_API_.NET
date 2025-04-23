@@ -5,6 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,21 +19,18 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-
-    <!-- Removed duplicate test adapter to avoid VS test adapter conflict -->
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TextToXmlApiNet.csproj" />
   </ItemGroup>
 
-  <!-- Copy appsettings.json from the main project into the test project output -->
-  <ItemGroup>
-      <None Include="..\appsettings.json">
-        <Link>appsettings.json</Link>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-  </ItemGroup>
-
+  <!--  MSBuild target to automatically delete the problematic file before compile -->
+  <Target Name="RemoveDuplicateTFAttribute" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <_TFAttributeFile Include="$(BaseIntermediateOutputPath).NETCoreApp,Version=$(TargetFrameworkVersion).AssemblyAttributes.cs" />
+    </ItemGroup>
+    <Delete Files="@(_TFAttributeFile)" />
+  </Target>
 
 </Project>

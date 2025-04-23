@@ -45,7 +45,8 @@ Keys/
 ############################################
 BenchmarkDotNet.Artifacts/
 BenchmarkDotNet.Artifacts.results/
-*.Benchmark.csproj
+# Removed the line below to allow benchmark project inclusion
+# *.Benchmark.csproj
 TextToXmlApiNet.Tests/
 *.Tests.csproj
 

@@ -156,7 +156,7 @@ app.UseEndpoints(endpoints =>
 try
 {
     Log.Information("Starting application...");
-    app.Run("http://localhost:5211");
+    app.Run();
 }
 catch (Exception ex)
 {

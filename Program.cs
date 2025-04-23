@@ -39,7 +39,7 @@ builder.Services.AddControllers()
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=Data/XmlStorage.db"));
 
-// Hangfire/Redis setup with retry safety
+// Hangfire/Redis setup
 if (!builder.Environment.IsEnvironment("Testing"))
 {
     try
@@ -58,7 +58,7 @@ if (!builder.Environment.IsEnvironment("Testing"))
     }
 }
 
-// Swagger / OpenAPI + API Key support
+// Swagger + API Key setup
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -118,7 +118,6 @@ var app = builder.Build();
 
 app.UseRouting();
 
-// Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -126,7 +125,7 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
-// Optional Swagger auto-launch
+// Auto-launch Swagger in browser
 try
 {
     Process.Start(new ProcessStartInfo
@@ -140,19 +139,19 @@ catch (Exception ex)
     Console.WriteLine("⚠ Failed to auto-launch Swagger UI: " + ex.Message);
 }
 
-// Hangfire dashboard (only for non-testing)
+// Hangfire Dashboard (not in Testing)
 if (!app.Environment.IsEnvironment("Testing"))
 {
     app.UseHangfireDashboard("/jobs");
 }
 
-// Authorization & Middleware
-app.UseAuthorization();
-
+// API Key middleware before authorization
 if (!app.Environment.IsEnvironment("Testing"))
 {
-    app.UseMiddleware<ApiKeyMiddleware>(); // <-- API KEY Middleware here
+    app.UseMiddleware<ApiKeyMiddleware>();
 }
+
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {

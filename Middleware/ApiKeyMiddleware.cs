@@ -7,7 +7,6 @@ namespace TextToXmlApiNet.Middleware
     public class ApiKeyMiddleware
     {
         private readonly RequestDelegate _next;
-        private const string APIKEY_HEADER_NAME = "X-API-KEY";
 
         public ApiKeyMiddleware(RequestDelegate next)
         {
@@ -16,19 +15,29 @@ namespace TextToXmlApiNet.Middleware
 
         public async Task InvokeAsync(HttpContext context, IConfiguration configuration)
         {
-            if (!context.Request.Headers.TryGetValue(APIKEY_HEADER_NAME, out var extractedApiKey))
+            var path = context.Request.Path.Value?.ToLower();
+
+            // Allow access to Swagger and Hangfire dashboard without API key
+            if (path.StartsWith("/swagger") || path.StartsWith("/docs") || path.StartsWith("/jobs"))
             {
-                context.Response.StatusCode = 401; // Unauthorized
+                await _next(context);
+                return;
+            }
+
+            // Check for API key
+            if (!context.Request.Headers.TryGetValue("X-API-KEY", out var extractedApiKey))
+            {
+                context.Response.StatusCode = 401;
                 await context.Response.WriteAsync("API Key is missing.");
                 return;
             }
 
-            var apiKey = configuration["ApiKey"];
+            var configuredApiKey = configuration["ApiKey"];
 
-            if (!apiKey.Equals(extractedApiKey))
+            if (configuredApiKey != extractedApiKey)
             {
-                context.Response.StatusCode = 403; // Forbidden
-                await context.Response.WriteAsync("Unauthorized access: Invalid API Key.");
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync("Unauthorized client.");
                 return;
             }
 

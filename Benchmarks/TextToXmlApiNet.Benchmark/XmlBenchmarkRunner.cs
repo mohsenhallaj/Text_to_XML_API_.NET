@@ -17,6 +17,6 @@ public class XmlBenchmarkRunner
 
     public static void Main(string[] args)
     {
-        BenchmarkRunner.Run<XmlBenchmark>();
+        BenchmarkRunner.Run<XmlBenchmarkRunner>();
     }
 }

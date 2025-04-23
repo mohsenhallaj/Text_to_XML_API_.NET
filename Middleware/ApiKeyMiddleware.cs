@@ -1,30 +1,22 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace TextToXmlApiNet.Middleware
 {
     public class ApiKeyMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly IConfiguration _configuration;
 
-        public ApiKeyMiddleware(RequestDelegate next)
+        public ApiKeyMiddleware(RequestDelegate next, IConfiguration configuration)
         {
             _next = next;
+            _configuration = configuration;
         }
 
-        public async Task InvokeAsync(HttpContext context, IConfiguration configuration)
+        public async Task InvokeAsync(HttpContext context)
         {
-            var path = context.Request.Path.Value?.ToLower();
-
-            // Allow access to Swagger and Hangfire dashboard without API key
-            if (path.StartsWith("/swagger") || path.StartsWith("/docs") || path.StartsWith("/jobs"))
-            {
-                await _next(context);
-                return;
-            }
-
-            // Check for API key
             if (!context.Request.Headers.TryGetValue("X-API-KEY", out var extractedApiKey))
             {
                 context.Response.StatusCode = 401;
@@ -32,9 +24,9 @@ namespace TextToXmlApiNet.Middleware
                 return;
             }
 
-            var configuredApiKey = configuration["ApiKey"];
+            var apiKey = _configuration.GetValue<string>("ApiKey");
 
-            if (configuredApiKey != extractedApiKey)
+            if (!apiKey.Equals(extractedApiKey))
             {
                 context.Response.StatusCode = 403;
                 await context.Response.WriteAsync("Unauthorized client.");

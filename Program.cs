@@ -118,6 +118,7 @@ var app = builder.Build();
 
 app.UseRouting();
 
+// Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -145,10 +146,23 @@ if (!app.Environment.IsEnvironment("Testing"))
     app.UseHangfireDashboard("/jobs");
 }
 
-// API Key middleware before authorization
+// Conditionally apply API key middleware (skip Swagger and root)
 if (!app.Environment.IsEnvironment("Testing"))
 {
-    app.UseMiddleware<ApiKeyMiddleware>();
+    app.Use(async (context, next) =>
+    {
+        var path = context.Request.Path.Value;
+
+        if (path.StartsWith("/swagger") || path == "/" || path.StartsWith("/favicon"))
+        {
+            await next();
+        }
+        else
+        {
+            var middleware = new ApiKeyMiddleware(next, builder.Configuration);
+            await middleware.InvokeAsync(context);
+        }
+    });
 }
 
 app.UseAuthorization();

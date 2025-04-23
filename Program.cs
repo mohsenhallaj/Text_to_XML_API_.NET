@@ -24,13 +24,13 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-// Configuration
+// Configuration setup
 builder.Configuration
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
-// Controllers & XML formatting
+// Controllers & XML
 builder.Services.AddControllers()
     .AddXmlSerializerFormatters();
 
@@ -55,7 +55,7 @@ if (!builder.Environment.IsEnvironment("Testing"))
     }
 }
 
-// Swagger + API key
+// Swagger and API Key support
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -104,7 +104,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Services
+// Custom Services
 builder.Services.AddScoped<IAesEncryptionService, AesEncryptionService>();
 builder.Services.AddSingleton<IRsaEncryptionService, RsaEncryptionService>();
 builder.Services.AddScoped<FieldValidationService>();
@@ -113,9 +113,9 @@ builder.Services.AddScoped<XmlBackgroundService>();
 
 var app = builder.Build();
 
-// Middleware & routing
 app.UseRouting();
 
+// Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -123,21 +123,20 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
-// Hangfire dashboard
+// Hangfire Dashboard
 if (!app.Environment.IsEnvironment("Testing"))
 {
     app.UseHangfireDashboard("/jobs");
 }
 
-// API Key protection
+// ✅ Place Middleware after Swagger & before Controllers
 if (!app.Environment.IsEnvironment("Testing"))
 {
     app.UseMiddleware<ApiKeyMiddleware>();
 }
 
 app.UseAuthorization();
-
-app.MapControllers(); // instead of UseEndpoints()
+app.MapControllers(); // modern equivalent of UseEndpoints
 
 try
 {
@@ -153,5 +152,5 @@ finally
     Log.CloseAndFlush();
 }
 
-// For integration tests
+// For integration testing
 public partial class Program { }

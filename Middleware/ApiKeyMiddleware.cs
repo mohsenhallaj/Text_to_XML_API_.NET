@@ -17,10 +17,15 @@ namespace TextToXmlApiNet.Middleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var path = context.Request.Path.Value;
+            var path = context.Request.Path.Value?.ToLower();
 
-            // Skip API Key check for Swagger and favicon
-            if (path.StartsWith("/swagger") || path.StartsWith("/swagger/index.html") || path == "/favicon.ico")
+            // Allow Swagger UI and OpenAPI JSON files without API key
+            if (path != null &&
+                (path.StartsWith("/swagger") ||
+                 path.StartsWith("/index.html") ||
+                 path.EndsWith("/swagger.json") ||
+                 path == "/" ||
+                 path == "/favicon.ico"))
             {
                 await _next(context);
                 return;
@@ -35,7 +40,7 @@ namespace TextToXmlApiNet.Middleware
 
             var apiKey = _configuration.GetValue<string>("ApiKey");
 
-            if (!apiKey.Equals(extractedApiKey))
+            if (string.IsNullOrEmpty(apiKey) || !apiKey.Equals(extractedApiKey))
             {
                 context.Response.StatusCode = 403;
                 await context.Response.WriteAsync("Unauthorized client.");
